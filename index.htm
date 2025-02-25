@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Key 20 Ký Tự</title>
+</head>
+<body>
+    <h2>Chuỗi 20 ký tự hôm nay:</h2>
+    <p id="randomString"></p>
+
+    <script>
+        function generateRandomString() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            const date = new Date();
+            const seed = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+            let hash = 0;
+            
+            // Biến seed thành số để hash
+            for (let i = 0; i < seed.length; i++) {
+                hash = (hash * 31 + seed.charCodeAt(i)) % chars.length;
+            }
+
+            let randomString = "";
+            for (let i = 0; i < 20; i++) {
+                randomString += chars[(hash + i * 7) % chars.length];
+            }
+            
+            return randomString;
+        }
+
+        // Hiển thị chuỗi trên trang
+        document.getElementById("randomString").innerText = generateRandomString();
+
+        // API trả về JSON
+        if (window.location.pathname === "/api") {
+            document.body.innerText = JSON.stringify({ key: generateRandomString() });
+        }
+    </script>
+</body>
+</html>
